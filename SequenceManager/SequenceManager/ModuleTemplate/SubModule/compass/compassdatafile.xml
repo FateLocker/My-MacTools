@@ -1,0 +1,8 @@
+<compass type="0" heading="0">
+  <layout center="{980,650}" bounds="{{0,0},{80,80}}"/>
+  <appearance plateImage="images/compass_n.png"
+              pointerImage=""
+              ringImage=""
+              glassImage=""
+              />
+</compass>

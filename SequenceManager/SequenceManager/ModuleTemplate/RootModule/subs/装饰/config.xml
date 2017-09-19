@@ -1,0 +1,11 @@
+<root>
+    <type>AnimationGenerator</type>
+    <name></name>
+    <subname></subname>
+    <icon>logo</icon>
+    <highlightedIcon>logo_h</highlightedIcon>
+    <layout>layout.xml</layout>
+    <dataFile>datafile.xml</dataFile>
+    <appearance>appearance.xml</appearance>
+</root>
+

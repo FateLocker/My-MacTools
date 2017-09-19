@@ -1,0 +1,11 @@
+<root sequenceFile="" fps="50" decelerationRate="0.010000" loopHorizontal="NO" changeOffset="{8, 0}" maximumZoomScale="1.500000" hotspotDirectory="hotspots" compassDataFile="compass/compassdatafile.xml" loopVertical="NO" minimumZoomScale="1.000000">
+    
+    <gate entranceFrame="0" moduleID="" direction="1" preloaded="0" allowNavigation="YES">
+       
+    </gate>
+    
+    <gate entranceFrame="-1" moduleID="" direction="4" preloaded="0" allowNavigation="YES">
+       
+    </gate>
+    
+</root>

@@ -1,0 +1,11 @@
+<root>
+    <type>SequenceFramesScene</type>
+    <id></id>
+    <name></name>
+    <subname></subname>
+    <icon>logo.jpg</icon>
+    <highlightedIcon>logo_h.jpg</highlightedIcon>
+    <layout>layout.xml</layout>
+    <dataFile>datafile.xml</dataFile>
+    <appearance>appearance.xml</appearance>
+</root>

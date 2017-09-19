@@ -1,0 +1,36 @@
+<animations>	
+	<property>
+		<setter key="ignoreOwnPointHitTest" value="YES" />
+	</property>
+	
+	<element type="UIButton">
+		<property>
+			<setter key="normalImage" value="image:=images/prevButton.png"/>
+			<setter key="sizeToFit"/>
+            <setter key="centerY" value="384"/>
+            <setter key="left" value="15"/>
+			<setter key="showsTouchWhenHighlighted" value="YES"/>
+			<setter key="draggableBounds" value="{{0,80},{42,608}}"/>
+		</property>
+		<command type="actionEvent" param="64">
+			<command type="GotoModule" startHandleIndex="1" moduleIndexOffset="-1" animated="YES" resetSubmoduleToIndex="-1">
+			</command>
+		</command>
+   	</element>
+
+	<element type="UIButton">
+		<property>
+			<setter key="normalImage" value="image:=images/nextButton.png"/>
+			<setter key="sizeToFit"/>
+			<setter key="centerY" value="384"/>
+			<setter key="right" value="999"/>
+			<setter key="showsTouchWhenHighlighted" value="YES"/>
+			<setter key="draggableBounds" value="{{982,80},{42,608}}"/>
+		</property>
+		<command type="actionEvent" param="64">
+			<command type="GotoModule" startHandleIndex="1" moduleIndexOffset="1" animated="YES" resetSubmoduleToIndex="0">
+			</command>
+		</command>
+   </element>
+
+</animations>

@@ -1,0 +1,6 @@
+framework module Pods_SequenceManagerUITests {
+  umbrella header "Pods-SequenceManagerUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
