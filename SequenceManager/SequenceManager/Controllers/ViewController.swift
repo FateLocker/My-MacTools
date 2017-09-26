@@ -13,6 +13,8 @@ class ViewController: NSViewController {
     
     var i = 1
     
+    @IBOutlet weak var textField: NSTextField!
+    
     let moduleFileManager = ModuleFileManger.shareInstance
     
     let resourcePath = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate"
@@ -20,22 +22,27 @@ class ViewController: NSViewController {
     var dataSource:[SequenceModule] = {
         
         var module1 = SequenceModule("区域沙盘")
-        module1.isLeaf = true
-        var module2 = SequenceModule("项目沙盘")
-        module2.isLeaf = true
-        var module3 = SequenceModule("单体1")
-        module3.isLeaf = true
+        module1.isLeaf = false
+        var module2 = SequenceModule("组团沙盘1")
+        module2.isLeaf = false
+        var module4 = SequenceModule("项目沙盘1")
+        module4.isLeaf = false
+        var module6 = SequenceModule("单体1")
+        module6.isLeaf = true
+        var module7 = SequenceModule("单体2")
+        module7.isLeaf = true
+        var module5 = SequenceModule("项目沙盘2")
+        module5.isLeaf = false
+        var module3 = SequenceModule("组团沙盘2")
+        module2.isLeaf = false
         
-        var modules1 = SequenceModule("沙盘1")
-        var modules2 = SequenceModule("沙盘2")
+        module4.leafModules = [module6,module7]
         
-        modules1.leafModules = [module1,module2,module3]
-        modules1.isLeaf = false
+        module2.leafModules = [module4,module5]
         
-        modules2.leafModules = [module1,module2,module3]
-        modules2.isLeaf = false
+        module1.leafModules = [module2,module5]
         
-        return [modules1,modules2]
+        return [module1]
     }()
     
     @IBOutlet weak var moduleListOutlineView: NSOutlineView!
@@ -44,6 +51,7 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.moduleListOutlineView.expandItem(nil, expandChildren: true)
     }
 
     override var representedObject: Any? {
@@ -78,21 +86,18 @@ class ViewController: NSViewController {
     ///添加模块
     @IBAction func addSubModule(_ sender: NSButton) {
         
-        let module1 = SequenceModule("区域沙盘")
-        module1.isLeaf = true
-        let module2 = SequenceModule("项目沙盘")
-        module2.isLeaf = true
-        let module3 = SequenceModule("单体1")
-        module3.isLeaf = true
+        if self.textField.stringValue.isEmpty {
+            return
+        }
         
-        let modules = SequenceModule("沙盘3")
+        let module = SequenceModule(self.textField.stringValue)
         
-        modules.leafModules = [module1,module2,module3]
-        modules.isLeaf = false
+        module.isLeaf = true
         
-        self.dataSource.append(modules)
+        self.dataSource.append(module)
         
         self.moduleListOutlineView.reloadData()
+        
         
     }
 
@@ -155,7 +160,7 @@ extension ViewController:NSOutlineViewDelegate{
         
         if let outlineView = notification.object as? NSOutlineView {
             
-            print("column: \(outlineView.selectedTag()) And row: \(outlineView.selectedRow)" )
+            print(outlineView.selectedRow)
             
         }
     }

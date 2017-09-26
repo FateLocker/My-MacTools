@@ -860,6 +860,7 @@
                     </view>
                     <connections>
                         <outlet property="moduleListOutlineView" destination="ZQc-Az-KRK" id="NbT-6Q-u8W"/>
+                        <outlet property="textField" destination="lTg-ax-9LY" id="oZj-Kd-wmX"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
