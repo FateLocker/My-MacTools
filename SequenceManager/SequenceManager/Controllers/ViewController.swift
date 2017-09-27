@@ -11,7 +11,9 @@ import SWXMLHash
 
 class ViewController: NSViewController {
     
-    var i = 1
+    var i = 00
+    
+    var j = 00
     
     @IBOutlet weak var textField: NSTextField!
     
@@ -40,7 +42,7 @@ class ViewController: NSViewController {
         
         module2.leafModules = [module4,module5]
         
-        module1.leafModules = [module2,module5]
+        module1.leafModules = [module2,module3]
         
         return [module1]
     }()
@@ -77,6 +79,10 @@ class ViewController: NSViewController {
                 
                 self.moduleFileManager.createDirectory(path)
                 
+                self.moduleFileManager.copyFile(from: self.resourcePath+"/RootModule", to: path + "/模块")
+                
+                self.createSandModule(sourceArray: self.dataSource, savePath: path + "/模块/subs/模块")
+                
             }
             
         }
@@ -97,6 +103,47 @@ class ViewController: NSViewController {
         self.dataSource.append(module)
         
         self.moduleListOutlineView.reloadData()
+        
+        
+    }
+    
+    //创建沙盘模块
+    func createSandModule(sourceArray array:Array<Any>, savePath path:String) ->Void{
+        
+        guard array.count != 0 else {
+            
+            return
+        }
+        
+        for item in array {
+            
+            if let moduleItem = item as? SequenceModule {
+                
+                //创建沙盘场景模块
+                self.moduleFileManager.copyFile(from: self.resourcePath + "/SubModule", to: path + "/\(i)B.\(moduleItem.moduleID)")
+                
+                i = i + 1
+                
+                if !moduleItem.isLeaf {
+                    
+                    for leafItem in moduleItem.leafModules {
+                        
+                        //创建衔接模块
+//                        self.moduleFileManager.copyFile(from: self.resourcePath + "/ConnectModule", to: path + "/\(i + j)A.\(moduleItem.moduleID + "到" + leafItem.moduleID)")
+                        
+                        j += 1
+                    }
+                    
+                    j = 0
+
+                    self.createSandModule(sourceArray: moduleItem.leafModules, savePath: path)
+                }
+                
+                
+            }
+            
+            
+        }
         
         
     }

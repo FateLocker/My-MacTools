@@ -91,6 +91,5 @@ class ModuleFileManger: NSObject {
         try? fileManger.copyItem(at: URL.init(fileURLWithPath: fromPath), to: URL.init(fileURLWithPath: toPath))
     
     }
-    
 
 }
