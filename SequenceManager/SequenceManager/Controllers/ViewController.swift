@@ -81,7 +81,7 @@ class ViewController: NSViewController {
                 
                 self.moduleFileManager.copyFile(from: self.resourcePath+"/RootModule", to: path + "/模块")
                 
-                self.createSandModule(sourceArray: self.dataSource, savePath: path + "/模块/subs/模块")
+                self.createSandModule(sourceArray: self.dataSource, savePath: path + "/模块/subs/模块", parentModule: nil)
                 
             }
             
@@ -108,7 +108,7 @@ class ViewController: NSViewController {
     }
     
     //创建沙盘模块
-    func createSandModule(sourceArray array:Array<Any>, savePath path:String) ->Void{
+    func createSandModule(sourceArray array:Array<SequenceModule>, savePath path:String, parentModule sequenceModuel:SequenceModule?) ->Void{
         
         guard array.count != 0 else {
             
@@ -117,34 +117,23 @@ class ViewController: NSViewController {
         
         for item in array {
             
-            if let moduleItem = item as? SequenceModule {
+            if let parentModuel = sequenceModuel {
                 
-                //创建沙盘场景模块
-                self.moduleFileManager.copyFile(from: self.resourcePath + "/SubModule", to: path + "/\(i)B.\(moduleItem.moduleID)")
-                
-                i = i + 1
-                
-                if !moduleItem.isLeaf {
-                    
-                    for leafItem in moduleItem.leafModules {
-                        
-                        //创建衔接模块
-//                        self.moduleFileManager.copyFile(from: self.resourcePath + "/ConnectModule", to: path + "/\(i + j)A.\(moduleItem.moduleID + "到" + leafItem.moduleID)")
-                        
-                        j += 1
-                    }
-                    
-                    j = 0
-
-                    self.createSandModule(sourceArray: moduleItem.leafModules, savePath: path)
-                }
-                
-                
+                //创建衔接模块
+                self.moduleFileManager.copyFile(from: self.resourcePath + "/ConnectModule", to: path + "/\(String(format:"%.2d",i))A.\(parentModuel.moduleID)" + "到" + "\(item.moduleID)")
             }
             
+            //创建沙盘场景模块
+            self.moduleFileManager.copyFile(from: self.resourcePath + "/SubModule", to: path + "/\(String(format:"%.2d",i))B.\(item.moduleID)")
+            
+            i = i + 1
+            
+            if !item.isLeaf {
+
+                self.createSandModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
+            }
             
         }
-        
         
     }
 
