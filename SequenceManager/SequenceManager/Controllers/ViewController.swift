@@ -11,9 +11,7 @@ import SWXMLHash
 
 class ViewController: NSViewController {
     
-    var i = 00
-    
-    var j = 00
+    var i = 0
     
     @IBOutlet weak var textField: NSTextField!
     
@@ -100,7 +98,14 @@ class ViewController: NSViewController {
         
         module.isLeaf = true
         
-        self.dataSource.append(module)
+        guard let selectModuleItem = self.moduleListOutlineView.item(atRow: self.moduleListOutlineView.selectedRow) as? SequenceModule else { return  }
+        
+        if selectModuleItem.isLeaf {
+            
+            selectModuleItem.isLeaf = false
+            
+            selectModuleItem.leafModules.append(module)
+        }
         
         self.moduleListOutlineView.reloadData()
         
@@ -136,6 +141,8 @@ class ViewController: NSViewController {
         }
         
     }
+    
+    
 
 }
 
@@ -194,13 +201,15 @@ extension ViewController:NSOutlineViewDelegate{
     
     public func outlineViewSelectionDidChange(_ notification: Notification) {
         
-        if let outlineView = notification.object as? NSOutlineView {
-            
-            print(outlineView.selectedRow)
-            
-        }
+        
+//        if selectItem.isLeaf {
+//            
+//            selectItem.leafModules =
+//        }
+//        
     }
     
+    //点击列的表头
     public func outlineView(_ outlineView: NSOutlineView, didClick tableColumn: NSTableColumn) {
         
         print("click")
