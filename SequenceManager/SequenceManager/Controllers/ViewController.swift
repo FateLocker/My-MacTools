@@ -9,6 +9,12 @@
 import Cocoa
 import SWXMLHash
 
+let ROOTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/RootModule"
+
+let SUBMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/SubModule"
+
+let CONNECTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/ConnectModule"
+
 class ViewController: NSViewController {
     
     var i = 0
@@ -16,8 +22,6 @@ class ViewController: NSViewController {
     @IBOutlet weak var textField: NSTextField!
     
     let moduleFileManager = ModuleFileManger.shareInstance
-    
-    let resourcePath = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate"
     
     var dataSource:[SequenceModule] = {
         
@@ -79,7 +83,7 @@ class ViewController: NSViewController {
                 
                 self.moduleFileManager.createDirectory(path)
                 
-                self.moduleFileManager.copyFile(from: self.resourcePath+"/RootModule", to: path + "/模块")
+                self.moduleFileManager.copyFile(from: ROOTMODULE_RESOURCE_PATH, to: path + "/模块")
                 
                 self.createSandModule(sourceArray: self.dataSource, savePath: path, parentModule: nil)
                 
@@ -131,7 +135,7 @@ class ViewController: NSViewController {
                 let fileName = "\(parentModuel.moduleID)" + "到" + "\(item.moduleID)"
                 
                 //创建衔接模块
-                self.moduleFileManager.copyFile(from: self.resourcePath + "/ConnectModule", to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)")
+                self.moduleFileManager.copyFile(from: CONNECTMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)")
                 
               //创建衔接序列帧路径
                 self.moduleFileManager.createDirectory(sequenceFilePath + "\(fileName)")
@@ -139,7 +143,7 @@ class ViewController: NSViewController {
             }
             
             //创建沙盘场景模块
-            self.moduleFileManager.copyFile(from: self.resourcePath + "/SubModule", to: modulePath + "/\(String(format:"%.2d",i))B.\(item.moduleID)")
+            self.moduleFileManager.copyFile(from: SUBMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))B.\(item.moduleID)")
             
             i = i + 1
             
