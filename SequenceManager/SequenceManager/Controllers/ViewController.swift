@@ -99,13 +99,10 @@ class ViewController: NSViewController {
         module.isLeaf = true
         
         guard let selectModuleItem = self.moduleListOutlineView.item(atRow: self.moduleListOutlineView.selectedRow) as? SequenceModule else { return  }
+            
+        selectModuleItem.isLeaf = false
         
-        if selectModuleItem.isLeaf {
-            
-            selectModuleItem.isLeaf = false
-            
-            selectModuleItem.leafModules.append(module)
-        }
+        selectModuleItem.leafModules.append(module)
         
         self.moduleListOutlineView.reloadData()
         
