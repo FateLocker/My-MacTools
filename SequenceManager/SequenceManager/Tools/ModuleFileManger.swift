@@ -41,12 +41,12 @@ class ModuleFileManger: NSObject {
     }
     
     ///根据传入的参数创建文件夹
-    func createDirectory(_ directorName:String) {
+    func createDirectory(_ directorPath:String) {
         
         //创建文件夹
         
         do {
-            try fileManger.createDirectory(atPath: directorName, withIntermediateDirectories: true, attributes: nil)
+            try fileManger.createDirectory(atPath: directorPath, withIntermediateDirectories: true, attributes: nil)
         } catch let error {
             
             print(error.localizedDescription)
