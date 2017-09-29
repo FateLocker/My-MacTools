@@ -14,6 +14,8 @@ class SequenceModule: NSObject {
     
     var isLeaf:Bool
     
+    var modulePath = String()
+    
     var leafModules = [SequenceModule]()
     
     init(_ moduleIDName:String) {

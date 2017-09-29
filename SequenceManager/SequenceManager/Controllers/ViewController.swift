@@ -15,6 +15,8 @@ let SUBMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/Modu
 
 let CONNECTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/ConnectModule"
 
+let ICONMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/IconModule"
+
 class ViewController: NSViewController {
     
     var i = 0
@@ -22,6 +24,9 @@ class ViewController: NSViewController {
     @IBOutlet weak var textField: NSTextField!
     
     let moduleFileManager = ModuleFileManger.shareInstance
+    
+    let xmlTool = XMLParserTool()
+    
     
     var dataSource:[SequenceModule] = {
         
@@ -96,6 +101,8 @@ class ViewController: NSViewController {
     ///添加模块
     @IBAction func addSubModule(_ sender: NSButton) {
         
+        i = 0
+        
         if self.textField.stringValue.isEmpty {
             return
         }
@@ -120,12 +127,14 @@ class ViewController: NSViewController {
         
         let modulePath = path + "/模块/subs/模块"
         
-        let sequenceFilePath = path + "/序列帧/沙盘"
+        let sequenceFilePath = path + "/序列帧/沙盘/"
         
         guard array.count != 0 else {
             
             return
         }
+        
+        
         
         for item in array {
             
@@ -134,16 +143,27 @@ class ViewController: NSViewController {
                 //衔接文件名
                 let fileName = "\(parentModuel.moduleID)" + "到" + "\(item.moduleID)"
                 
+                //添加衔接点
+                
+                self.createMuleAndAddID(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/\(item.moduleID)", AndItemID: item.moduleID)
+                
                 //创建衔接模块
-                self.moduleFileManager.copyFile(from: CONNECTMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)")
+                
+                self.createMuleAndAddID(from: CONNECTMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)", AndItemID: fileName)
+                
+                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)/datafile.xml", addProperty: "序列帧/沙盘/" + fileName)
                 
               //创建衔接序列帧路径
                 self.moduleFileManager.createDirectory(sequenceFilePath + "\(fileName)")
                 
             }
             
+            //模块路径
+            item.modulePath = modulePath + "/\(String(format:"%.2d",i))B.\(item.moduleID)"
+            
             //创建沙盘场景模块
-            self.moduleFileManager.copyFile(from: SUBMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))B.\(item.moduleID)")
+            
+            self.createMuleAndAddID(from: SUBMODULE_RESOURCE_PATH, to: item.modulePath, AndItemID: item.moduleID)
             
             i = i + 1
             
@@ -156,10 +176,20 @@ class ViewController: NSViewController {
         
     }
     
+    func createMuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
+        
+        //创建模块
+        self.moduleFileManager.copyFile(from: pathFrom, to: pathTo)
+        
+        //命名模块ID
+        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item)
+        
+    }
     
-
+    
 }
 
+//MARK: DataSource Delegate
 extension ViewController:NSOutlineViewDataSource {
     
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
@@ -195,6 +225,8 @@ extension ViewController:NSOutlineViewDataSource {
 }
 
 
+
+//MARK: View Delegate
 extension ViewController:NSOutlineViewDelegate{
     
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
@@ -213,20 +245,8 @@ extension ViewController:NSOutlineViewDelegate{
         
     }
     
-    public func outlineViewSelectionDidChange(_ notification: Notification) {
-        
-        
-//        if selectItem.isLeaf {
-//            
-//            selectItem.leafModules =
-//        }
-//        
-    }
-    
     //点击列的表头
     public func outlineView(_ outlineView: NSOutlineView, didClick tableColumn: NSTableColumn) {
-        
-        print("click")
         
     }
     

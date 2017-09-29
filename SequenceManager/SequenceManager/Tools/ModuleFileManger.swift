@@ -91,5 +91,16 @@ class ModuleFileManger: NSObject {
         try? fileManger.copyItem(at: URL.init(fileURLWithPath: fromPath), to: URL.init(fileURLWithPath: toPath))
     
     }
+    
+    //把String保存到文件
+    func saveStringToFile(saveString string:String ,savePath path:String){
+        
+        do {
+            try string.write(toFile: path, atomically: true, encoding:String.Encoding.utf8)
+        } catch{
+            
+            return
+        }
+    }
 
 }

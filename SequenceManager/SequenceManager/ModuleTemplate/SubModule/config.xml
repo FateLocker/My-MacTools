@@ -1,8 +1,5 @@
 <root>
   <type>SequenceFramesScene</type>
-  <id>沙盘_项目沙盘</id>
-  <name></name>
-  <subname></subname>
   <icon>logo.png</icon>
   <highlightedIcon>logo_h.png</highlightedIcon>
   <layout>layout.xml</layout>

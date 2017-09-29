@@ -1,0 +1,77 @@
+<root>
+    <property>
+        <setter key="scaleTo:" value="{1.5,1.5}"/>
+        <setter key="userInteractionEnabled" value="YES"/>
+        <setter key="clipsToBounds" value="NO"/>
+    </property>
+    
+    <element type="IMView">
+        <property>
+            <setter key="size" value="{1,1}"/>
+        </property>
+        <command type="SequenceFramesSceneMapElementBind">
+            <placemakr layoutSource="placemarklayout.xml" imageBindMode="2" annotation="YES"></placemakr>
+        </command>
+        <element type="IMView">
+            <property>
+                <setter key="size" value="{1,20}" />
+                <setter key="backgroundColor" value="#c98a47" />
+                <setter key="anchorPoint" value="{.5,1}"/>
+                <setter key="height" value="0"/>
+                <setter key="center" value="{0,0}"/>
+            </property>
+            
+            <animationStart duration=".5">
+                <property>
+                    <setter key="height" value="23"/>
+                    <setter key="center" value="{0,0}"/>
+                </property>
+            </animationStart>
+        </element>
+        
+        <!--按钮-->
+        <element type="IMButton">
+            <property>
+                <setter key="normalImage" value="images/icon"/>
+                <!--                <setter key="backgroundColor" value="#e3b443"/>-->
+                <setter key="cornerRadius" value="3"/>
+                <setter key="normalTitleColor" value="#ffffff"/>
+                <setter key="titleFont" value="{13}"/>
+                <setter key="sizeToFit" />
+                <setter key="anchorPoint" value="{0.5,1}"/>
+                <setter key="center" value="{0,-20}"/>
+            </property>
+            <command type="actionEvent" param="64">
+                <command type="SequenceFramesScene_AutoPlay" toFrame="0" speed="25" recentlyPathEnabled="YES">
+                    <command type="GotoModule" moduleID="${.resourceItem.id}" animated="YES" />
+                </command>
+            </command>
+            
+            <property>
+                <setter key="scaleTo:" value="{0,0}"/>
+            </property>
+            <animationStart duration=".4" delay=".3" springDamping=".4" springInitialVelocity="12">
+                <property>
+                    <setter key="scaleTo:" value="{.6,.6}"/>
+                </property>
+            </animationStart>
+            
+        </element>
+        
+        
+        <!--圆点-->
+        <element type="IMView">
+            <property>
+                <setter key="size" value="{4,4}"/>
+                <setter key="backgroundColor" value="#c98a47"/>
+                <setter key="sizeToFit"/>
+                <setter key="anchorPoint" value="{.5,.5}"/>
+                <setter key="cornerRadius" value="2"/>
+                <setter key="center" value="{0,0}"/>
+            </property>
+            
+        </element>
+    </element>
+    
+    
+</root>

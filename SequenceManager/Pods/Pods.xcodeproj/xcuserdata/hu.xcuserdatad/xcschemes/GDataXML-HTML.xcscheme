@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4F04C159799DE4771A57AF0F3DEF1011"
-               BuildableName = "Pods_SequenceManager.framework"
-               BlueprintName = "Pods-SequenceManager"
+               BlueprintIdentifier = "D72BDF62692B8BEB8904D327380ACE1E"
+               BuildableName = "GDataXML_HTML.framework"
+               BlueprintName = "GDataXML-HTML"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4F04C159799DE4771A57AF0F3DEF1011"
-            BuildableName = "Pods_SequenceManager.framework"
-            BlueprintName = "Pods-SequenceManager"
+            BlueprintIdentifier = "D72BDF62692B8BEB8904D327380ACE1E"
+            BuildableName = "GDataXML_HTML.framework"
+            BlueprintName = "GDataXML-HTML"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

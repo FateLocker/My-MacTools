@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>GDataXML-HTML.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-SequenceManager.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,17 +37,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>4F04C159799DE4771A57AF0F3DEF1011</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>65B2D79241A646B82645508AADBAEDC3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>743F4D53127683738BFB56ECF2B782C5</key>
+		<key>70A21097335A8C3FC1C40BE1074E398B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CE666962AC8359D7506F83508BE19E30</key>
+		<key>D72BDF62692B8BEB8904D327380ACE1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
