@@ -1,4 +1,4 @@
-<root decorateBundle="subs/装饰"  fps="80" decelerationRate="0.010000" loopHorizontal="NO" changeOffset="{8, 0}" maximumZoomScale="1.00000" hotspotDirectory="hotspots" compassDataFile="compass/compassdatafile.xml" loopVertical="YES" minimumZoomScale="1.000000">
+<root   fps="80" decelerationRate="0.010000" loopHorizontal="NO" changeOffset="{8, 0}" maximumZoomScale="1.00000" hotspotDirectory="hotspots" compassDataFile="compass/compassdatafile.xml" loopVertical="YES" minimumZoomScale="1.000000">
 
     <events>
         <onLoaded>

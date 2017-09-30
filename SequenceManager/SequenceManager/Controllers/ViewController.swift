@@ -42,7 +42,39 @@ class ViewController: NSViewController {
     
     var dataSource:[SequenceModule] = {
         
-        return []
+        let module1 = SequenceModule("区域优势")
+        
+        module1.isLeaf = false
+        
+        
+        let module11 = SequenceModule("高速")
+        
+        module11.isLeaf = true
+        
+        
+        let module12 = SequenceModule("轨道")
+        
+        module12.isLeaf = true
+        
+        module1.leafModules = [module11,module12]
+        
+        let module2 = SequenceModule("项目优势")
+        
+        module2.isLeaf = false
+        
+        
+        let module21 = SequenceModule("教育")
+        
+        module21.isLeaf = true
+        
+        
+        let module22 = SequenceModule("医疗")
+        
+        module22.isLeaf = true
+        
+        module2.leafModules = [module21,module22]
+        
+        return [module1,module2]
     }()
     
     @IBOutlet weak var moduleListOutlineView: NSOutlineView!
@@ -60,7 +92,7 @@ class ViewController: NSViewController {
         }
     }
     
-    private func openSavePanel(savePath pathStr:String){
+    private func openSavePanel() -> NSSavePanel{
         
         let panel = NSSavePanel()
         
@@ -70,21 +102,7 @@ class ViewController: NSViewController {
         
         panel.canCreateDirectories = true
         
-        
-        panel.begin { (result) in
-            
-            if result == NSFileHandlingPanelOKButton {
-                
-                let path = panel.url!.path
-                
-                self.moduleFileManager.createDirectory(path)
-                
-                self.moduleFileManager.copyFile(from: pathStr, to: path + "/模块")
-                
-                self.createSandModule(sourceArray: self.dataSource, savePath: path, parentModule: nil)
-                
-            }
-        }
+        return panel
     
     }
     ///添加模块
@@ -131,7 +149,22 @@ class ViewController: NSViewController {
     //生成沙盘文件夹
     @IBAction func saveModule(_ sender: Any) {
         
-        self.openSavePanel(savePath: ROOTMODULE_RESOURCE_PATH)
+        let panel = self.openSavePanel()
+        
+        panel.begin { (result) in
+            
+            if result == NSFileHandlingPanelOKButton {
+                
+                let path = panel.url!.path
+                
+                self.moduleFileManager.createDirectory(path)
+                
+                self.moduleFileManager.copyFile(from: ROOTMODULE_RESOURCE_PATH, to: path + "/模块")
+                
+                self.createSandModule(sourceArray: self.dataSource, savePath: path, parentModule: nil)
+                
+            }
+        }
         
     }
     
@@ -200,13 +233,62 @@ class ViewController: NSViewController {
     
     @IBAction func saveTrafficModule(_ sender: NSButton) {
         
+        let panel = self.openSavePanel()
+        
+        panel.begin { (result) in
+            
+            if result == NSFileHandlingPanelOKButton {
+                
+                let path = panel.url!.path
+                
+                self.moduleFileManager.createDirectory(path)
+                
+                self.moduleFileManager.copyFile(from: TRAFFIC_RESOURCE_PATH, to: path + "/模块")
+                
+                self.createTracficModule(sourceArray:self.dataSource, savePath: path,parentModule:nil)
+                
+            }
+        }
         
     }
     
     //创建区位模块
-    private func createTracficModule(sourceArray array:Array<SequenceModule>, savePath path:String){
-    
-    
+    private func createTracficModule(sourceArray array:Array<SequenceModule>, savePath path:String,parentModule parentMod:SequenceModule?){
+        
+        let modulePath = path + "/模块/subs/模块"
+        
+        guard array.count != 0 else {
+            
+            return
+        }
+        
+        for item in array {
+            
+            var j = 0
+            
+            j = array.index(of: item)!
+            
+            if item.isLeaf {
+                
+                if let parentModule = parentMod {
+                    
+                    self.moduleFileManager.copyFile(from:TRAFFICSUB_RESOURCE_PATH, to: parentModule.modulePath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID)
+                }
+                
+                
+            }else{
+                
+                let itemPath = modulePath + "/\(String(format:"%.2d",j))" + item.moduleID
+            
+                self.moduleFileManager.copyFile(from: TRAFFICROOT_RESOURCE_PATH, to:itemPath)
+                
+                item.modulePath = itemPath
+                
+                self.createTracficModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
+                
+            }
+            
+        }
     }
     
     private func createMuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
