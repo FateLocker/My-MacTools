@@ -12,7 +12,7 @@ extension String{
 
     var encode:String? {
         
-        return self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet(charactersIn: "!*'\\\\()\";:@&=+$,/?%#[]%").inverted)
+        return self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet(charactersIn: "!*'\";:@&=+$,?%#[]%").inverted)
     
     }
     
@@ -71,7 +71,7 @@ class XMLParserTool: NSObject {
         
     }
     
-    
+    //添加id元素
     func addXMLFileElement(targetXMLPath targetpath:String?, addProperty propertyString:String?) {
         
         guard let idString = propertyString else { return  }
@@ -92,6 +92,7 @@ class XMLParserTool: NSObject {
         self.saveXMLFile(doc: doc, to: targetpath!)
     }
     
+    //添加序列路径属性
     func changeXMLRootElementProperty(targetXMLPath targetpath:String?, addProperty propertyString:String?) {
         
         guard let propertyStr = propertyString else { return  }
@@ -105,12 +106,19 @@ class XMLParserTool: NSObject {
         
         let str = propertyStr.encode
         
-        let attr = GDataXMLNode.attribute(withName: "sequenceFile", stringValue:str )
+        let attr = GDataXMLNode.attribute(withName: "sequenceFile", stringValue:str ) as! GDataXMLNode
         
-        doc.rootElement().addAttribute(attr as! GDataXMLNode!)
+        let attr1 = GDataXMLNode.attribute(withName: "decorateBundle", stringValue:"subs/" + "装饰".encode! ) as! GDataXMLNode
+        
+        let attr2 = GDataXMLNode.attribute(withName: "submodulesBundle", stringValue:"subs/" + "模块".encode! ) as! GDataXMLNode
+        
+        doc.rootElement().addAttribute(attr)
+        
+        doc.rootElement().addAttribute(attr1)
+        
+        doc.rootElement().addAttribute(attr2)
         
         self.saveXMLFile(doc: doc, to: targetpath!)
-        
         
     }
 }

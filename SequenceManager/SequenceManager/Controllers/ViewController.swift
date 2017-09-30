@@ -9,6 +9,8 @@
 import Cocoa
 import SWXMLHash
 
+//沙盘资源
+
 let ROOTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/RootModule"
 
 let SUBMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/SubModule"
@@ -18,6 +20,14 @@ let CONNECTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/
 let ICONMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/IconModule"
 
 let BACKBUTTON_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/BackButton"
+
+//区位资源
+
+let TRAFFIC_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/TrafficModule"
+
+let TRAFFICROOT_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/RootModule"
+
+let TRAFFICSUB_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/SubModule"
 
 class ViewController: NSViewController {
     
@@ -50,8 +60,7 @@ class ViewController: NSViewController {
         }
     }
     
-    private func openSavePanel() ->NSSavePanel{
-        
+    private func openSavePanel(savePath pathStr:String){
         
         let panel = NSSavePanel()
         
@@ -61,49 +70,24 @@ class ViewController: NSViewController {
         
         panel.canCreateDirectories = true
         
-        return panel
-    
-    }
-    
-    //生成沙盘模块
-    @IBAction func saveModule(_ sender: Any) {
-        
-        let panel = self.openSavePanel()
         
         panel.begin { (result) in
             
             if result == NSFileHandlingPanelOKButton {
-            
+                
                 let path = panel.url!.path
                 
                 self.moduleFileManager.createDirectory(path)
                 
-                self.moduleFileManager.copyFile(from: ROOTMODULE_RESOURCE_PATH, to: path + "/模块")
+                self.moduleFileManager.copyFile(from: pathStr, to: path + "/模块")
                 
                 self.createSandModule(sourceArray: self.dataSource, savePath: path, parentModule: nil)
                 
             }
         }
-        
-    }
-    //生成区位模块
     
-    @IBAction func saveTrafficModule(_ sender: NSButton) {
-        
-        let panel = self.openSavePanel()
-        
-        panel.begin { (result) in
-            
-            let path = panel.url!.path
-            
-            self.moduleFileManager.createDirectory(path)
-            
-            self.moduleFileManager.copyFile(from: ROOTMODULE_RESOURCE_PATH, to: path + "/模块")
-            
-            
-        }
     }
-    ///生成模块
+    ///添加模块
     @IBAction func addSubModule(_ sender: NSButton) {
         
         i = 0
@@ -134,19 +118,21 @@ class ViewController: NSViewController {
             
             return
         }
-            
+        
         selectModuleItem.isLeaf = false
         
         selectModuleItem.leafModules.append(module)
         
         self.moduleListOutlineView.reloadData()
         
+        
     }
     
-    //创建区位模块
-    private func createTracficModule(){
-    
-    
+    //生成沙盘文件夹
+    @IBAction func saveModule(_ sender: Any) {
+        
+        self.openSavePanel(savePath: ROOTMODULE_RESOURCE_PATH)
+        
     }
     
     //创建沙盘模块
@@ -171,6 +157,10 @@ class ViewController: NSViewController {
             //创建沙盘场景模块
             
             self.createMuleAndAddID(from: SUBMODULE_RESOURCE_PATH, to: item.modulePath, AndItemID: item.moduleID)
+            
+            self.moduleFileManager.createDirectory(sequenceFilePath + "\(item.moduleID)")
+            
+            self.xmlTool.changeXMLRootElementProperty(targetXMLPath: item.modulePath + "/datafile.xml", addProperty: "序列帧/沙盘/" + item.moduleID)
             
             if let parentModuel = sequenceModuel {
                 
@@ -199,12 +189,24 @@ class ViewController: NSViewController {
             i = i + 1
             
             if !item.isLeaf {
-
+                
                 self.createSandModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
             }
             
         }
         
+    }
+    //生成区位文件夹
+    
+    @IBAction func saveTrafficModule(_ sender: NSButton) {
+        
+        
+    }
+    
+    //创建区位模块
+    private func createTracficModule(sourceArray array:Array<SequenceModule>, savePath path:String){
+    
+    
     }
     
     private func createMuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
