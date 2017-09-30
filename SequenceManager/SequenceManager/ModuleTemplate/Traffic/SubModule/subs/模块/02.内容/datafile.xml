@@ -1,0 +1,11 @@
+<root decorateBundle="subs/装饰"  fps="80" decelerationRate="0.010000" loopHorizontal="NO" changeOffset="{8, 0}" maximumZoomScale="1.00000" hotspotDirectory="hotspots" compassDataFile="compass/compassdatafile.xml" loopVertical="YES" minimumZoomScale="1.000000">
+
+    <events>
+        <onLoaded>
+            <action type="SequenceFramesScene_AutoPlay" fromFrame="0" toFrame="-1" speed="20" numberOfRepeat="999999" delay="30">
+            </action>
+        </onLoaded>
+    </events>
+
+
+</root>

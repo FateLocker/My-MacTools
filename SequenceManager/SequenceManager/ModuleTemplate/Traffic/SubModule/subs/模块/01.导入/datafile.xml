@@ -1,0 +1,13 @@
+<root  fps="100" decelerationRate="0.010000" loopHorizontal="NO" changeOffset="{8, 0}" maximumZoomScale="1.00000" hotspotDirectory="hotspots" compassDataFile="compass/compassdatafile.xml" loopVertical="YES" minimumZoomScale="1.000000">
+
+    <events>
+        <onLoaded>
+            <action type="SequenceFramesScene_AutoPlay" fromFrame="0" toFrame="-1" speed="20" delay="30">
+            </action>
+        </onLoaded>
+    </events>
+     <gate entranceFrame="-1" moduleID="内容" direction="4" preloaded="0" allowNavigation="YES">
+       
+    </gate>
+
+</root>

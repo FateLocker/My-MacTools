@@ -9,15 +9,15 @@
 import Cocoa
 import SWXMLHash
 
-let ROOTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/RootModule"
+let ROOTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/RootModule"
 
-let SUBMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/SubModule"
+let SUBMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/SubModule"
 
-let CONNECTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/ConnectModule"
+let CONNECTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/ConnectModule"
 
-let ICONMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/IconModule"
+let ICONMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/IconModule"
 
-let BACKBUTTON_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/BackButton"
+let BACKBUTTON_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Sand/BackButton"
 
 class ViewController: NSViewController {
     
@@ -32,28 +32,7 @@ class ViewController: NSViewController {
     
     var dataSource:[SequenceModule] = {
         
-        var module1 = SequenceModule("区域沙盘")
-        module1.isLeaf = false
-        var module2 = SequenceModule("组团沙盘1")
-        module2.isLeaf = false
-        var module4 = SequenceModule("项目沙盘1")
-        module4.isLeaf = false
-        var module6 = SequenceModule("单体1")
-        module6.isLeaf = true
-        var module7 = SequenceModule("单体2")
-        module7.isLeaf = true
-        var module5 = SequenceModule("项目沙盘2")
-        module5.isLeaf = false
-        var module3 = SequenceModule("组团沙盘2")
-        module2.isLeaf = false
-        
-        module4.leafModules = [module6,module7]
-        
-        module2.leafModules = [module4,module5]
-        
-        module1.leafModules = [module2,module3]
-        
-        return [module1]
+        return []
     }()
     
     @IBOutlet weak var moduleListOutlineView: NSOutlineView!
@@ -71,8 +50,8 @@ class ViewController: NSViewController {
         }
     }
     
-    //生成模块文件
-    @IBAction func saveModule(_ sender: Any) {
+    private func openSavePanel() ->NSSavePanel{
+        
         
         let panel = NSSavePanel()
         
@@ -81,6 +60,15 @@ class ViewController: NSViewController {
         panel.allowsOtherFileTypes = true
         
         panel.canCreateDirectories = true
+        
+        return panel
+    
+    }
+    
+    //生成沙盘模块
+    @IBAction func saveModule(_ sender: Any) {
+        
+        let panel = self.openSavePanel()
         
         panel.begin { (result) in
             
@@ -95,12 +83,27 @@ class ViewController: NSViewController {
                 self.createSandModule(sourceArray: self.dataSource, savePath: path, parentModule: nil)
                 
             }
-            
         }
         
     }
+    //生成区位模块
     
-    ///添加模块
+    @IBAction func saveTrafficModule(_ sender: NSButton) {
+        
+        let panel = self.openSavePanel()
+        
+        panel.begin { (result) in
+            
+            let path = panel.url!.path
+            
+            self.moduleFileManager.createDirectory(path)
+            
+            self.moduleFileManager.copyFile(from: ROOTMODULE_RESOURCE_PATH, to: path + "/模块")
+            
+            
+        }
+    }
+    ///生成模块
     @IBAction func addSubModule(_ sender: NSButton) {
         
         i = 0
@@ -113,7 +116,24 @@ class ViewController: NSViewController {
         
         module.isLeaf = true
         
-        guard let selectModuleItem = self.moduleListOutlineView.item(atRow: self.moduleListOutlineView.selectedRow) as? SequenceModule else { return  }
+        guard self.dataSource.count != 0 else {
+            
+            self.dataSource.append(module)
+            
+            self.moduleListOutlineView.reloadData()
+            
+            return
+        }
+        
+        
+        guard let selectModuleItem = self.moduleListOutlineView.item(atRow: self.moduleListOutlineView.selectedRow) as? SequenceModule else {
+            
+            self.dataSource.append(module)
+            
+            self.moduleListOutlineView.reloadData()
+            
+            return
+        }
             
         selectModuleItem.isLeaf = false
         
@@ -121,11 +141,16 @@ class ViewController: NSViewController {
         
         self.moduleListOutlineView.reloadData()
         
-        
+    }
+    
+    //创建区位模块
+    private func createTracficModule(){
+    
+    
     }
     
     //创建沙盘模块
-    func createSandModule(sourceArray array:Array<SequenceModule>, savePath path:String, parentModule sequenceModuel:SequenceModule?) ->Void{
+    private func createSandModule(sourceArray array:Array<SequenceModule>, savePath path:String, parentModule sequenceModuel:SequenceModule?) ->Void{
         
         let modulePath = path + "/模块/subs/模块"
         
@@ -182,7 +207,7 @@ class ViewController: NSViewController {
         
     }
     
-    func createMuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
+    private func createMuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
         
         //创建模块
         self.moduleFileManager.copyFile(from: pathFrom, to: pathTo)
@@ -227,7 +252,6 @@ extension ViewController:NSOutlineViewDataSource {
         
         return dataSource[index]
     }
-    
 }
 
 

@@ -1,0 +1,12 @@
+<layout >
+    <menuView frame="{{603,14},{130,130}}">
+    </menuView>
+    <menuLayout itemSpace="15" direction="1">
+        
+        <!-- <viewLayoutSource source="rootmenulayou.xml" idMatchingRules="SELF == &quot;.&quot;"/> -->
+    </menuLayout>
+    
+    <itemLayout layoutType="2">
+    </itemLayout>
+    
+</layout>

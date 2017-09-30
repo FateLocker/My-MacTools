@@ -1,0 +1,9 @@
+<root>
+	<type>Root</type>
+	<icon>logo.png</icon>
+	<highlightedIcon>logo_h.png</highlightedIcon>
+	<layout>layout.xml</layout>
+	<appearance>appearance.xml</appearance>
+	<dataFile>datafile.xml</dataFile>
+    <loader>loaderconfig.xml</loader>
+</root>

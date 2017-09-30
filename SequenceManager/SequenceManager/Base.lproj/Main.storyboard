@@ -828,7 +828,7 @@
                                                     <constraint firstAttribute="height" constant="18" id="B81-H0-1b9"/>
                                                     <constraint firstAttribute="width" constant="64" id="r8s-ih-fau"/>
                                                 </constraints>
-                                                <buttonCell key="cell" type="roundRect" title="生成模块" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LVc-Km-jad">
+                                                <buttonCell key="cell" type="roundRect" title="生成沙盘" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="LVc-Km-jad">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" size="12" name=".PingFangSC-Regular"/>
                                                 </buttonCell>
@@ -836,10 +836,26 @@
                                                     <action selector="saveModule:" target="XfG-lQ-9wD" id="wVF-sB-o6e"/>
                                                 </connections>
                                             </button>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V60-zD-W8a">
+                                                <rect key="frame" x="214" y="36" width="64" height="19"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="64" id="Rqm-GT-NKR"/>
+                                                    <constraint firstAttribute="height" constant="18" id="xup-ug-kNR"/>
+                                                </constraints>
+                                                <buttonCell key="cell" type="roundRect" title="生成区位" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="roi-Ey-Uwx">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" size="12" name=".PingFangSC-Regular"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="saveTrafficModule:" target="XfG-lQ-9wD" id="bnz-3B-7wC"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="QpF-3W-GxK" firstAttribute="top" secondItem="V60-zD-W8a" secondAttribute="bottom" constant="8" id="1ZM-Uh-MyE"/>
                                             <constraint firstItem="Yhs-mg-L93" firstAttribute="top" secondItem="eT1-kv-1dg" secondAttribute="top" constant="34" id="3yy-Uc-gX7"/>
                                             <constraint firstAttribute="bottom" secondItem="QpF-3W-GxK" secondAttribute="bottom" constant="11" id="D7B-Hm-bRz"/>
+                                            <constraint firstItem="V60-zD-W8a" firstAttribute="centerX" secondItem="QpF-3W-GxK" secondAttribute="centerX" id="GHc-LQ-t9F"/>
                                             <constraint firstItem="Yhs-mg-L93" firstAttribute="leading" secondItem="eT1-kv-1dg" secondAttribute="leading" constant="36" id="cq8-tT-WbS"/>
                                             <constraint firstAttribute="trailing" secondItem="QpF-3W-GxK" secondAttribute="trailing" constant="19.5" id="eQX-ys-Q1N"/>
                                         </constraints>

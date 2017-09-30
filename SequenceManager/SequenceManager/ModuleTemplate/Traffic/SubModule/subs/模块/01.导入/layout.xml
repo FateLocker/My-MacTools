@@ -1,0 +1,16 @@
+<root>
+	<playControlBar frame="{{-200,256},{64,192}}">
+  	<stateButton frame="{{-200,128},{64,64}}" tintColor="#FF323232" showsTouchWhenHighlighted="YES"
+               outerRingRadius="22" innerRingRadius="20" stateRadius="12" progress="0"
+               outerRingColor="#99FFFFFF" innerRingColor="#00FFFFFF" stateStyle="0"
+               />
+  
+  	<backButton frame="{{-200,64},{64,64}}" tintColor="#FF323232" showsTouchWhenHighlighted="YES"
+              outerRingRadius="22" outerRingColor="#99FFFFFF" stateRadius="12" stateStyle="2">
+  	</backButton>
+  
+  	<forwardButton frame="{{-200,0},{64,64}}" tintColor="#FF323232" showsTouchWhenHighlighted="YES"
+              outerRingRadius="22" outerRingColor="#99FFFFFF" stateRadius="12" stateStyle="3">
+  	</forwardButton>
+	</playControlBar>
+</root>

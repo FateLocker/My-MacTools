@@ -1,0 +1,10 @@
+<root fps="36" decelerationRate="0.010000" loopHorizontal="NO" loopVertical="NO" changeOffset="{8, 0}" maximumZoomScale="1.00000" hotspotDirectory="hotspots" compassDataFile="compass/compassdatafile.xml" minimumZoomScale="1.000000" decorateBundle="subs/装饰">
+  
+     <events>
+        <onLoaded>
+            <action type="SequenceFramesScene_AutoPlay" fromFrame="0" toFrame="-1" speed="32" numberOfRepeat="99999">
+            </action>
+        </onLoaded>
+    </events> 
+     
+</root>
