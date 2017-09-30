@@ -1,0 +1,17 @@
+<root>
+    <element type="IMButton">
+        <property>
+            <setter key="normalBackgroundImage" value="images/returnButton.png" />
+            <setter key="frame" value=" {{8, 8}, {30, 30}}" />
+        </property>
+        <command param="64" type="actionEvent">
+            <command type="SequenceFramesScene_AutoPlay" toFrame="0" speed="25" recentlyPathEnabled="YES">
+            <command type="GotoModule" moduleID="$(resourceItem.id)" animated="YES" >
+            </command>
+            </command>
+        </command>
+    </element>
+    <property>
+        <setter key="ignoreOwnPointHitTest" value="YES" />
+    </property>
+</root>

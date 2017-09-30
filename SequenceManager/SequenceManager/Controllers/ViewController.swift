@@ -17,6 +17,8 @@ let CONNECTMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/
 
 let ICONMODULE_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/IconModule"
 
+let BACKBUTTON_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/BackButton"
+
 class ViewController: NSViewController {
     
     var i = 0
@@ -138,6 +140,13 @@ class ViewController: NSViewController {
         
         for item in array {
             
+            //模块路径
+            item.modulePath = modulePath + "/\(String(format:"%.2d",i))B.\(item.moduleID)"
+            
+            //创建沙盘场景模块
+            
+            self.createMuleAndAddID(from: SUBMODULE_RESOURCE_PATH, to: item.modulePath, AndItemID: item.moduleID)
+            
             if let parentModuel = sequenceModuel {
                 
                 //衔接文件名
@@ -153,17 +162,14 @@ class ViewController: NSViewController {
                 
                 self.xmlTool.changeXMLRootElementProperty(targetXMLPath: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)/datafile.xml", addProperty: "序列帧/沙盘/" + fileName)
                 
-              //创建衔接序列帧路径
+                //创建衔接序列帧路径
                 self.moduleFileManager.createDirectory(sequenceFilePath + "\(fileName)")
+                
+                //添加返回按钮
+                self.createMuleAndAddID(from: BACKBUTTON_RESOURCE_PATH, to: item.modulePath + "/subs/装饰/返回", AndItemID: parentModuel.moduleID)
                 
             }
             
-            //模块路径
-            item.modulePath = modulePath + "/\(String(format:"%.2d",i))B.\(item.moduleID)"
-            
-            //创建沙盘场景模块
-            
-            self.createMuleAndAddID(from: SUBMODULE_RESOURCE_PATH, to: item.modulePath, AndItemID: item.moduleID)
             
             i = i + 1
             
