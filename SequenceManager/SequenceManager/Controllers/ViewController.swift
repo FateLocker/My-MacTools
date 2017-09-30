@@ -29,6 +29,10 @@ let TRAFFICROOT_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/Mo
 
 let TRAFFICSUB_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/SubModule"
 
+let TRAFFICROOTFOLDER_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/Folder/Root"
+
+let TRAFFICSUBFOLDER_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/Folder/Sub"
+
 class ViewController: NSViewController {
     
     var i = 0
@@ -245,7 +249,13 @@ class ViewController: NSViewController {
                 
                 self.moduleFileManager.copyFile(from: TRAFFIC_RESOURCE_PATH, to: path + "/模块")
                 
+                let modulePath = path + "/序列帧/区位"
+                
+                self.moduleFileManager.createDirectory(modulePath)
+                
                 self.createTracficModule(sourceArray:self.dataSource, savePath: path,parentModule:nil)
+                
+                self.createTrafficSequenceFloder(source:self.dataSource, savePath: modulePath,parentModule:nil)
                 
             }
         }
@@ -286,6 +296,42 @@ class ViewController: NSViewController {
                 
                 self.createTracficModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
                 
+            }
+            
+        }
+    }
+    
+    //创建区位序列文件
+    private func createTrafficSequenceFloder(source folderSource:Array<SequenceModule>,savePath path:String,parentModule parentMod:SequenceModule?){
+        
+        if folderSource.count == 0 {
+            
+            return
+        }
+        
+        for item in folderSource {
+            
+            var j = 0
+            
+            j = folderSource.index(of: item)!
+            
+            if item.isLeaf {
+                
+                if let parentModule = parentMod {
+                
+                    self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: parentModule.modulePath + "/模块" + "/\(item.moduleID)")
+                }
+                
+            }else{
+                
+                let itemPath = path + "/\(String(format:"%.2d",j))" + item.moduleID
+            
+                self.moduleFileManager.copyFile(from: TRAFFICROOTFOLDER_RESOURCE_PATH, to: itemPath )
+                
+                item.modulePath = itemPath
+                
+                self.createTrafficSequenceFloder(source: item.leafModules, savePath: path, parentModule: item)
+            
             }
             
         }
