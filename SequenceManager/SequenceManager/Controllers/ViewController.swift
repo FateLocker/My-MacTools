@@ -193,7 +193,7 @@ class ViewController: NSViewController {
             
             //创建沙盘场景模块
             
-            self.createMuleAndAddID(from: SUBMODULE_RESOURCE_PATH, to: item.modulePath, AndItemID: item.moduleID)
+            self.createModuleAndAddID(from: SUBMODULE_RESOURCE_PATH, to: item.modulePath, AndItemID: item.moduleID)
             
             self.moduleFileManager.createDirectory(sequenceFilePath + "\(item.moduleID)")
             
@@ -206,11 +206,11 @@ class ViewController: NSViewController {
                 
                 //添加衔接点
                 
-                self.createMuleAndAddID(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/\(item.moduleID)", AndItemID: item.moduleID)
+                self.createModuleAndAddID(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/\(item.moduleID)", AndItemID: item.moduleID)
                 
                 //创建衔接模块
                 
-                self.createMuleAndAddID(from: CONNECTMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)", AndItemID: fileName)
+                self.createModuleAndAddID(from: CONNECTMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)", AndItemID: fileName)
                 
                 self.xmlTool.changeXMLRootElementProperty(targetXMLPath: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)/datafile.xml", addProperty: "序列帧/沙盘/" + fileName)
                 
@@ -218,7 +218,7 @@ class ViewController: NSViewController {
                 self.moduleFileManager.createDirectory(sequenceFilePath + "\(fileName)")
                 
                 //添加返回按钮
-                self.createMuleAndAddID(from: BACKBUTTON_RESOURCE_PATH, to: item.modulePath + "/subs/装饰/返回", AndItemID: parentModuel.moduleID)
+                self.createModuleAndAddID(from: BACKBUTTON_RESOURCE_PATH, to: item.modulePath + "/subs/装饰/返回", AndItemID: parentModuel.moduleID)
                 
             }
             
@@ -282,23 +282,60 @@ class ViewController: NSViewController {
                 
                 if let parentModule = parentMod {
                     
-                    self.moduleFileManager.copyFile(from:TRAFFICSUB_RESOURCE_PATH, to: parentModule.modulePath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID)
+                    let moduleFolderPath = parentModule.modulePath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
+                    
+                    self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
+                    
+                    //指定模块路径
+                    
+                    self.appointModuleSequence(modulePath: moduleFolderPath, sequencePath: item.moduleID, parentModuleID: parentModule.moduleID)
                 }
                 
                 
             }else{
                 
                 let itemPath = modulePath + "/\(String(format:"%.2d",j))" + item.moduleID
-            
-                self.moduleFileManager.copyFile(from: TRAFFICROOT_RESOURCE_PATH, to:itemPath)
+                
+                self.createModuleAndAddID(from: TRAFFICROOT_RESOURCE_PATH, to: itemPath, AndItemID: item.moduleID)
                 
                 item.modulePath = itemPath
                 
                 self.createTracficModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
                 
+                //主模块导入
+                
+                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/01.导入/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/导入")
+                //背景
+                
+                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/背景/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/导入")
+                
+                //logo
+                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", AndItemID: "")
+                
+                self.appointModuleSequence(modulePath: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", sequencePath:"logo", parentModuleID: nil)
+                
+                
             }
             
         }
+    }
+    
+    private func appointModuleSequence(modulePath path:String,sequencePath sequence:String, parentModuleID parentID:String?){
+        
+        var sequencePath = "序列帧/区位"
+        
+        if let str = parentID {
+            
+            sequencePath = sequencePath + "/\(str)" + "/模块"
+        }
+        
+        //导入
+        
+        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: path + "/subs/模块/01.导入/datafile.xml", addProperty: sequencePath + "/\(sequence)/导入" )
+        
+        //内容
+        
+        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: path + "/subs/模块/02.内容/datafile.xml", addProperty: sequencePath + "/\(sequence)/内容" )
     }
     
     //创建区位序列文件
@@ -311,20 +348,18 @@ class ViewController: NSViewController {
         
         for item in folderSource {
             
-            var j = 0
-            
-            j = folderSource.index(of: item)!
-            
             if item.isLeaf {
                 
                 if let parentModule = parentMod {
                 
                     self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: parentModule.modulePath + "/模块" + "/\(item.moduleID)")
+                    
+                    
                 }
                 
             }else{
                 
-                let itemPath = path + "/\(String(format:"%.2d",j))" + item.moduleID
+                let itemPath = path + "/" + item.moduleID
             
                 self.moduleFileManager.copyFile(from: TRAFFICROOTFOLDER_RESOURCE_PATH, to: itemPath )
                 
@@ -337,7 +372,7 @@ class ViewController: NSViewController {
         }
     }
     
-    private func createMuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
+    private func createModuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
         
         //创建模块
         self.moduleFileManager.copyFile(from: pathFrom, to: pathTo)
