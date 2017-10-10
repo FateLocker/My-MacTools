@@ -850,6 +850,20 @@
                                                     <action selector="saveTrafficModule:" target="XfG-lQ-9wD" id="bnz-3B-7wC"/>
                                                 </connections>
                                             </button>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ5-9f-ZIV">
+                                                <rect key="frame" x="214" y="245" width="64" height="19"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="64" id="86W-Hg-QRy"/>
+                                                    <constraint firstAttribute="height" constant="18" id="Zdt-Ky-wVq"/>
+                                                </constraints>
+                                                <buttonCell key="cell" type="roundRect" title="清除所有" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RKe-Di-d9Y">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" size="12" name=".PingFangSC-Regular"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="clearDataSource:" target="XfG-lQ-9wD" id="M8R-Wo-DLA"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="QpF-3W-GxK" firstAttribute="top" secondItem="V60-zD-W8a" secondAttribute="bottom" constant="8" id="1ZM-Uh-MyE"/>
@@ -858,6 +872,8 @@
                                             <constraint firstItem="V60-zD-W8a" firstAttribute="centerX" secondItem="QpF-3W-GxK" secondAttribute="centerX" id="GHc-LQ-t9F"/>
                                             <constraint firstItem="Yhs-mg-L93" firstAttribute="leading" secondItem="eT1-kv-1dg" secondAttribute="leading" constant="36" id="cq8-tT-WbS"/>
                                             <constraint firstAttribute="trailing" secondItem="QpF-3W-GxK" secondAttribute="trailing" constant="19.5" id="eQX-ys-Q1N"/>
+                                            <constraint firstItem="ZJ5-9f-ZIV" firstAttribute="top" secondItem="eT1-kv-1dg" secondAttribute="top" constant="6" id="hEn-0X-ZNL"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZJ5-9f-ZIV" secondAttribute="trailing" constant="19" id="u2P-5Z-Oot"/>
                                         </constraints>
                                     </customView>
                                 </subviews>

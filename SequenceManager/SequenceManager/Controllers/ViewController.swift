@@ -46,39 +46,7 @@ class ViewController: NSViewController {
     
     var dataSource:[SequenceModule] = {
         
-        let module1 = SequenceModule("区域优势")
-        
-        module1.isLeaf = false
-        
-        
-        let module11 = SequenceModule("高速")
-        
-        module11.isLeaf = true
-        
-        
-        let module12 = SequenceModule("轨道")
-        
-        module12.isLeaf = true
-        
-        module1.leafModules = [module11,module12]
-        
-        let module2 = SequenceModule("项目优势")
-        
-        module2.isLeaf = false
-        
-        
-        let module21 = SequenceModule("教育")
-        
-        module21.isLeaf = true
-        
-        
-        let module22 = SequenceModule("医疗")
-        
-        module22.isLeaf = true
-        
-        module2.leafModules = [module21,module22]
-        
-        return [module1,module2]
+        return []
     }()
     
     @IBOutlet weak var moduleListOutlineView: NSOutlineView!
@@ -88,6 +56,10 @@ class ViewController: NSViewController {
 
         // Do any additional setup after loading the view.
         self.moduleListOutlineView.expandItem(nil, expandChildren: true)
+        
+        let menu = NSMenu()
+        menu.delegate = self
+        self.moduleListOutlineView.menu = menu
     }
 
     override var representedObject: Any? {
@@ -108,6 +80,11 @@ class ViewController: NSViewController {
         
         return panel
     
+    }
+    @IBAction func clearDataSource(_ sender: NSButton) {
+        
+        self.dataSource.removeAll()
+        self.moduleListOutlineView.reloadData()
     }
     ///添加模块
     @IBAction func addSubModule(_ sender: NSButton) {
@@ -144,6 +121,8 @@ class ViewController: NSViewController {
         selectModuleItem.isLeaf = false
         
         selectModuleItem.leafModules.append(module)
+        
+        module.parentModule = selectModuleItem
         
         self.moduleListOutlineView.reloadData()
         
@@ -307,7 +286,7 @@ class ViewController: NSViewController {
                 self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/01.导入/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/导入")
                 //背景
                 
-                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/背景/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/导入")
+                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/背景/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/背景")
                 
                 //logo
                 self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", AndItemID: "")
@@ -385,6 +364,49 @@ class ViewController: NSViewController {
     
 }
 
+extension ViewController:NSMenuDelegate{
+
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        menu.removeAllItems()
+        menu.addItem(NSMenuItem.init(title: "删除", action: #selector(remove), keyEquivalent: ""))
+        
+    }
+    
+    func remove(menu:NSMenu) {
+        
+        guard let clickModule = self.moduleListOutlineView.item(atRow: self.moduleListOutlineView.clickedRow) as? SequenceModule else { return
+        
+        }
+        
+        if clickModule.parentModule == nil {//没有父模块
+            
+            if self.dataSource.contains(clickModule) {
+                
+                let index = self.dataSource.index(of: clickModule)
+                
+                self.dataSource.remove(at: index!)
+                
+            }
+    
+        }else{
+            
+            if (clickModule.parentModule?.leafModules.contains(clickModule))! {
+                
+                
+                let index = clickModule.parentModule?.leafModules.index(of: clickModule)
+                
+                clickModule.parentModule?.leafModules.remove(at: index!)
+                
+            }
+            
+        
+        }
+        
+        self.moduleListOutlineView.reloadData()
+        
+    }
+}
+
 //MARK: DataSource Delegate
 extension ViewController:NSOutlineViewDataSource {
     
@@ -437,6 +459,13 @@ extension ViewController:NSOutlineViewDelegate{
         }
         
         return cell
+        
+    }
+    
+    //删除
+    public func outlineView(_ outlineView: NSOutlineView, didRemove rowView: NSTableRowView, forRow row: Int) {
+        
+        
         
     }
     

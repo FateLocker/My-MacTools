@@ -10,6 +10,8 @@ import Cocoa
 
 class SequenceModule: NSObject {
     
+    var parentModule:SequenceModule?
+    
     var moduleID:String
     
     var isLeaf:Bool
@@ -17,14 +19,29 @@ class SequenceModule: NSObject {
     var modulePath = String()
     
     var leafModules = [SequenceModule]()
+        {
+            didSet{
+            
+                if leafModules.count == 0 {
+                    
+                    self.isLeaf = true
+                }else{
+                
+                
+                    self.isLeaf = false
+                }
+            
+            }
+    
+    }
     
     init(_ moduleIDName:String) {
         
         moduleID = moduleIDName
         
         isLeaf = false
+        
+        
     }
-    
-    
 
 }
