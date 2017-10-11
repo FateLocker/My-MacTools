@@ -205,7 +205,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
                 
                 //添加衔接点
                 
-                self.createModuleAndAddID(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/\(item.moduleID)", AndItemID: item.moduleID)
+                self.createModuleAndAddName(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/\(item.moduleID)", AndItemName: item.moduleID)
                 
                 //创建衔接模块
                 
