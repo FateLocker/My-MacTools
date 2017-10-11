@@ -33,7 +33,9 @@ let TRAFFICROOTFOLDER_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resour
 
 let TRAFFICSUBFOLDER_RESOURCE_PATH = Bundle.main.bundlePath + "/Contents/Resources/ModuleTemplate/Traffic/Folder/Sub"
 
-class ViewController: NSViewController {
+class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
+    
+    let mainWindow = NSWindowController()
     
     var i = 0
     
@@ -60,6 +62,24 @@ class ViewController: NSViewController {
         let menu = NSMenu()
         menu.delegate = self
         self.moduleListOutlineView.menu = menu
+        
+        //关闭按钮直接退出程序
+        NSApp.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(closeWindow), name: .NSWindowWillClose, object: mainWindow)
+        
+        //关闭窗口,不退出程序
+        
+    }
+    
+    func closeWindow(){
+    
+        NSApp.terminate(self)
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        
+        return true
     }
 
     override var representedObject: Any? {
@@ -197,7 +217,7 @@ class ViewController: NSViewController {
                 self.moduleFileManager.createDirectory(sequenceFilePath + "\(fileName)")
                 
                 //添加返回按钮
-                self.createModuleAndAddID(from: BACKBUTTON_RESOURCE_PATH, to: item.modulePath + "/subs/装饰/返回", AndItemID: parentModuel.moduleID)
+                self.createModuleAndAddName(from: BACKBUTTON_RESOURCE_PATH, to: item.modulePath + "/subs/装饰/返回", AndItemName: parentModuel.moduleID)
                 
             }
             
@@ -257,7 +277,53 @@ class ViewController: NSViewController {
             
             j = array.index(of: item)!
             
-            if item.isLeaf {
+            if let parentModule = parentMod {
+                
+                let moduleFolderPath = parentModule.modulePath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
+                
+                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
+                
+                //指定模块路径
+                
+                self.appointModuleSequence(modulePath: moduleFolderPath, sequencePath: item.moduleID, parentModuleID: parentModule.moduleID)
+                
+            }else{
+                
+                let itemPath = modulePath + "/\(String(format:"%.2d",j))" + item.moduleID
+                
+                self.createModuleAndAddID(from: TRAFFICROOT_RESOURCE_PATH, to: itemPath, AndItemID: item.moduleID)
+                
+                item.modulePath = itemPath
+                
+                self.createTracficModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
+                
+                //主模块导入
+                
+                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/01.导入/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/导入")
+                //背景
+                
+                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/背景/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/背景")
+                
+                //logo
+                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", AndItemID: "")
+                
+                self.appointModuleSequence(modulePath: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", sequencePath:"logo", parentModuleID: nil)
+                
+                if item.isLeaf {
+                    
+                    let moduleFolderPath = itemPath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
+                    
+                    self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
+                    
+                    //指定模块路径
+                    
+                    self.appointModuleSequence(modulePath: moduleFolderPath, sequencePath: item.moduleID, parentModuleID: item.moduleID)
+                    
+                }
+            }
+            
+            
+/**            if item.isLeaf {
                 
                 if let parentModule = parentMod {
                     
@@ -268,8 +334,18 @@ class ViewController: NSViewController {
                     //指定模块路径
                     
                     self.appointModuleSequence(modulePath: moduleFolderPath, sequencePath: item.moduleID, parentModuleID: parentModule.moduleID)
-                }
+                }else{
+                    
+                    
+                    let moduleFolderPath = modulePath + "/\(String(format:"%.2d",j))" + item.moduleID
+                    
+                    self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
+                    
+                    //指定模块路径
+                    
+                    self.appointModuleSequence(modulePath: moduleFolderPath, sequencePath: item.moduleID, parentModuleID: nil)
                 
+                }
                 
             }else{
                 
@@ -295,6 +371,7 @@ class ViewController: NSViewController {
                 
                 
             }
+**/
             
         }
     }
@@ -325,15 +402,41 @@ class ViewController: NSViewController {
             return
         }
         
+        
         for item in folderSource {
             
-            if item.isLeaf {
+            if let parentModule = parentMod {
+                
+                self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: parentModule.modulePath + "/模块" + "/\(item.moduleID)")
+                
+            }else{
+                
+                let itemPath = path + "/" + item.moduleID
+                
+                self.moduleFileManager.copyFile(from: TRAFFICROOTFOLDER_RESOURCE_PATH, to: itemPath )
+                
+                item.modulePath = itemPath
+                
+                self.createTrafficSequenceFloder(source: item.leafModules, savePath: path, parentModule: item)
+                
+                if item.isLeaf {
+                    
+                    self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: itemPath + "/模块" + "/\(item.moduleID)")
+                }
+            
+            
+            }
+            
+            
+/**            if item.isLeaf {
                 
                 if let parentModule = parentMod {
                 
                     self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: parentModule.modulePath + "/模块" + "/\(item.moduleID)")
                     
+                }else{
                     
+                    self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: path + "/\(item.moduleID)")
                 }
                 
             }else{
@@ -347,6 +450,7 @@ class ViewController: NSViewController {
                 self.createTrafficSequenceFloder(source: item.leafModules, savePath: path, parentModule: item)
             
             }
+**/
             
         }
     }
@@ -357,7 +461,19 @@ class ViewController: NSViewController {
         self.moduleFileManager.copyFile(from: pathFrom, to: pathTo)
         
         //命名模块ID
-        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item)
+//        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item)
+        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item, withElementName: "id")
+        
+    }
+    
+    private func createModuleAndAddName(from pathFrom:String,to pathTo:String,AndItemName item:String){
+        
+        //创建模块
+        self.moduleFileManager.copyFile(from: pathFrom, to: pathTo)
+        
+        //命名模块Name
+        //        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item)
+        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item, withElementName: "name")
         
     }
     
@@ -392,10 +508,14 @@ extension ViewController:NSMenuDelegate{
             
             if (clickModule.parentModule?.leafModules.contains(clickModule))! {
                 
-                
                 let index = clickModule.parentModule?.leafModules.index(of: clickModule)
                 
                 clickModule.parentModule?.leafModules.remove(at: index!)
+                
+                if clickModule.parentModule?.leafModules.count == 0 {
+                    
+                    clickModule.parentModule?.isLeaf = true
+                }
                 
             }
             

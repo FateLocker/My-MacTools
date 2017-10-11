@@ -19,21 +19,20 @@ class SequenceModule: NSObject {
     var modulePath = String()
     
     var leafModules = [SequenceModule]()
-        {
-            didSet{
-            
-                if leafModules.count == 0 {
-                    
-                    self.isLeaf = true
-                }else{
-                
-                
-                    self.isLeaf = false
-                }
-            
-            }
-    
-    }
+//        {
+//            didSet{
+//            
+//                if leafModules.count == 0 {
+//                    
+//                    self.isLeaf = true
+//                }else{
+//                
+//                
+//                    self.isLeaf = false
+//                }
+//            
+//            }
+//    }
     
     init(_ moduleIDName:String) {
         

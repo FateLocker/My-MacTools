@@ -72,7 +72,7 @@ class XMLParserTool: NSObject {
     }
     
     //添加id元素
-    func addXMLFileElement(targetXMLPath targetpath:String?, addProperty propertyString:String?) {
+    func addXMLFileElement(targetXMLPath targetpath:String?, addProperty propertyString:String? ,withElementName elementName:String) {
         
         guard let idString = propertyString else { return  }
         
@@ -80,7 +80,7 @@ class XMLParserTool: NSObject {
         
         let str = idString.encode
         
-        let pathEle = GDataXMLNode.element(withName: "id", stringValue: str)
+        let pathEle = GDataXMLNode.element(withName: elementName, stringValue: str)
         
         element.addChild(pathEle)
         

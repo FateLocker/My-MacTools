@@ -6,7 +6,7 @@
         </property>
         <command param="64" type="actionEvent">
             <command type="SequenceFramesScene_AutoPlay" toFrame="0" speed="25" recentlyPathEnabled="YES">
-            <command type="GotoModule" moduleID="$(resourceItem.id)" animated="YES" >
+            <command type="GotoModule" moduleID="$(resourceItem.name)" animated="YES" >
             </command>
             </command>
         </command>
