@@ -6,7 +6,7 @@
             </action>
         </onLoaded>
     </events>
-     <gate entranceFrame="-1" moduleID="$(resourceItem.name)" direction="4" preloaded="0" allowNavigation="YES">
+     <gate entranceFrame="-1" moduleID="content" direction="4" preloaded="0" allowNavigation="YES">
        
     </gate>
 
