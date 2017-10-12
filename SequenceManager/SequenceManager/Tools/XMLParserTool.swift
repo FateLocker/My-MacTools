@@ -92,6 +92,27 @@ class XMLParserTool: NSObject {
         self.saveXMLFile(doc: doc, to: targetpath!)
     }
     
+    //根据字符串生成xml文件
+    func createXMLFile(xmlString:String,savePath path:String?){
+        
+        var element = GDataXMLElement()
+        
+        do {
+            
+            element = try GDataXMLElement.init(xmlString: xmlString)
+            
+        } catch {
+            
+        }
+        
+        guard let doc = GDataXMLDocument.init(rootElement: element) else {
+            
+            return
+        }
+        
+        self.saveXMLFile(doc: doc, to: path!)
+    }
+    
     //添加序列路径属性
     func changeXMLRootElementProperty(targetXMLPath targetpath:String?, addProperty propertyString:String?) {
         

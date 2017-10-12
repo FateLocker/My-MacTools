@@ -205,13 +205,19 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
                 
                 //添加衔接点
                 
-                self.createModuleAndAddName(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/\(item.moduleID)", AndItemName: item.moduleID)
+                self.createModuleAndAddName(from: ICONMODULE_RESOURCE_PATH, to: parentModuel.modulePath + "/subs/模块/01/00.\(item.moduleID)", AndItemName: item.moduleID)
                 
                 //创建衔接模块
                 
                 self.createModuleAndAddID(from: CONNECTMODULE_RESOURCE_PATH, to: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)", AndItemID: fileName)
                 
-                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)/datafile.xml", addProperty: "序列帧/沙盘/" + fileName)
+//                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)/datafile.xml", addProperty: "序列帧/沙盘/" + fileName)
+                let transSequencePath = "序列帧/沙盘/" + fileName
+                
+                
+                let transXMLString = "<root sequenceFile='\(transSequencePath.encode!)' fps='50' decelerationRate='0.010000' loopHorizontal='NO' changeOffset='{8, 0}' maximumZoomScale='1.500000' hotspotDirectory='hotspots' compassDataFile='compass/compassdatafile.xml' loopVertical='NO' minimumZoomScale='1.000000'>\n <gate entranceFrame='0' moduleID='\(parentModuel.moduleID.encode!)' direction='1' preloaded='0' allowNavigation='YES'>\n </gate>\n <gate entranceFrame='-1' moduleID='\(item.moduleID.encode!)' direction='4' preloaded='0' allowNavigation='YES'>\n </gate>\n </root>"
+                
+                self.xmlTool.createXMLFile(xmlString: transXMLString, savePath: modulePath + "/\(String(format:"%.2d",i))A.\(fileName)/datafile.xml")
                 
                 //创建衔接序列帧路径
                 self.moduleFileManager.createDirectory(sequenceFilePath + "\(fileName)")
