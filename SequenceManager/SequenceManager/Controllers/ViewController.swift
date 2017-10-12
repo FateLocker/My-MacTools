@@ -307,13 +307,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
                 //logo
                 self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", AndItemID: "")
                 
-                //logo导入
-                
-                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo/subs/模块/01.导入/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/logo/导入" )
-                
-                //logo内容
-                
-                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo/subs/模块/02.内容/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/logo/内容" )
+                self.appointModuleSequence(modulePath: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", sequencePath: "logo", parentModuleID: item.moduleID)
                 
                 if item.isLeaf {
                     
@@ -388,7 +382,15 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         if let str = parentID {
             
-            sequencePath = sequencePath + "/\(str)" + "/模块"
+            if sequence == "logo" {
+                
+                sequencePath = sequencePath + "/\(str)"
+                
+            }else{
+                
+                sequencePath = sequencePath + "/\(str)" + "/模块"
+                
+            }
         }
         
         //导入
