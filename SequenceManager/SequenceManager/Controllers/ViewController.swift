@@ -285,7 +285,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
             
             if let parentModule = parentMod {
                 
-                let moduleFolderPath = parentModule.modulePath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
+                let moduleFolderPath = parentModule.modulePath + "/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
                 
                 self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
                 
@@ -302,22 +302,19 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
                 item.modulePath = itemPath
                 
                 self.createTracficModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
-                
-                //主模块导入
-                
-                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/01.导入/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/导入")
                 //背景
+                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/背景", AndItemID: "")
                 
-                self.xmlTool.changeXMLRootElementProperty(targetXMLPath: itemPath + "/subs/模块/02.内容/subs/背景/datafile.xml", addProperty: "序列帧/区位/\(item.moduleID)/背景")
+                self.appointModuleSequence(modulePath: itemPath + "/subs/背景", sequencePath: "背景", parentModuleID: item.moduleID)
                 
                 //logo
-                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", AndItemID: "")
+                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/装饰/subs/logo", AndItemID: "")
                 
-                self.appointModuleSequence(modulePath: itemPath + "/subs/模块/02.内容/subs/装饰/subs/logo", sequencePath: "logo", parentModuleID: item.moduleID)
+                self.appointModuleSequence(modulePath: itemPath + "/subs/装饰/subs/logo", sequencePath: "logo", parentModuleID: item.moduleID)
                 
                 if item.isLeaf {
                     
-                    let moduleFolderPath = itemPath + "/subs/模块/02.内容/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
+                    let moduleFolderPath = itemPath + "/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
                     
                     self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
                     
@@ -388,7 +385,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         if let str = parentID {
             
-            if sequence == "logo" {
+            if sequence == "logo" || sequence == "背景"{
                 
                 sequencePath = sequencePath + "/\(str)"
                 

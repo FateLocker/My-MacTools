@@ -1,1 +1,12 @@
-<root><type>VirtualTourSequenceFramesContent</type><layout>layout.xml</layout><name>菜单</name><subname>menu</subname><dataFile>datafile.xml</dataFile><icon>logo.png</icon><appearance>appearance.xml</appearance></root>
+<root>
+	<type>ScrollContent</type>
+	<id></id>
+	<name></name>
+	<subname></subname>
+	<icon>logo.png</icon>
+	<highlightedIcon>logo_h.png</highlightedIcon>
+	<layout>layout.xml</layout>
+	<appearance>appearance.xml</appearance>
+	<dataFile>datafile.xml</dataFile>
+    <loader>loaderconfig.xml</loader>
+</root>
