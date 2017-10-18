@@ -26,7 +26,7 @@ extension String{
 
 class XMLParserTool: NSObject {
     
-    func getXMLData(filePath:String?) -> GDataXMLElement? {
+   private func getXMLData(filePath:String?) -> GDataXMLElement? {
         
         guard let fileTargetpath = filePath else {
             
@@ -59,7 +59,7 @@ class XMLParserTool: NSObject {
         return element
     }
     
-    func saveXMLFile(doc:GDataXMLDocument,to path:String) {
+   private func saveXMLFile(doc:GDataXMLDocument,to path:String) {
         
         guard let xmlData = doc.xmlData() else { return  }
         
@@ -72,7 +72,7 @@ class XMLParserTool: NSObject {
     }
     
     //添加id元素
-    func addXMLFileElement(targetXMLPath targetpath:String?, addProperty propertyString:String? ,withElementName elementName:String) {
+  public  func addXMLFileElement(targetXMLPath targetpath:String?, addProperty propertyString:String? ,withElementName elementName:String) {
         
         guard let idString = propertyString else { return  }
         
@@ -93,7 +93,7 @@ class XMLParserTool: NSObject {
     }
     
     //根据字符串生成xml文件
-    func createXMLFile(xmlString:String,savePath path:String?){
+   public func createXMLFile(xmlString:String,savePath path:String?){
         
         var element = GDataXMLElement()
         
@@ -114,7 +114,7 @@ class XMLParserTool: NSObject {
     }
     
     //添加序列路径属性
-    func changeXMLRootElementProperty(targetXMLPath targetpath:String?, addProperty propertyString:String?) {
+  public  func changeXMLRootElementProperty(targetXMLPath targetpath:String?, addProperty propertyString:String?) {
         
         guard let propertyStr = propertyString else { return  }
         
@@ -141,5 +141,25 @@ class XMLParserTool: NSObject {
         
         self.saveXMLFile(doc: doc, to: targetpath!)
         
+    }
+    
+    public func changeNodeElement(XMLFilePath filePath:String ,nodeName node:String, elementDic dic:Dictionary<String, String>){
+        
+        guard let element = self.getXMLData(filePath: filePath) else { return  }
+        
+        guard let doc = GDataXMLDocument.init(rootElement: element) else {
+            
+            return
+        }
+        for (key, value) in dic {
+            
+            let arrt = GDataXMLNode.attribute(withName: key, stringValue: value)
+            
+            doc.rootElement().addAttribute(arrt as! GDataXMLNode!)
+            
+        }
+        
+        self.saveXMLFile(doc: doc, to: filePath)
+    
     }
 }

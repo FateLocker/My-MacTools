@@ -41,7 +41,7 @@ class ModuleFileManger: NSObject {
     }
     
     ///根据传入的参数创建文件夹
-    func createDirectory(_ directorPath:String) {
+   public func createDirectory(_ directorPath:String) {
         
         //创建文件夹
         
@@ -58,7 +58,7 @@ class ModuleFileManger: NSObject {
     }
     
     ///根据传入的文件名创建文件
-    func createFile(_ fileName:String, toPath targetPath:String){
+   public func createFile(_ fileName:String, toPath targetPath:String){
         
         let filePath = targetPath + ("/\(fileName)")
 
@@ -78,7 +78,7 @@ class ModuleFileManger: NSObject {
     }
     
     ///遍历文件夹
-    func traverseFilePath(targetPath:String){
+   public func traverseFilePath(targetPath:String){
         
 //        let contentOfPath = try? fileManger.contentsOfDirectory(atPath: targetPath)
         
@@ -86,14 +86,14 @@ class ModuleFileManger: NSObject {
     }
     
     ///复制文件
-    func copyFile(from fromPath:String, to toPath:String ){
+   public func copyFile(from fromPath:String, to toPath:String ){
         
         try? fileManger.copyItem(at: URL.init(fileURLWithPath: fromPath), to: URL.init(fileURLWithPath: toPath))
     
     }
     
     //把String保存到文件
-    func saveStringToFile(saveString string:String ,savePath path:String){
+   public func saveStringToFile(saveString string:String ,savePath path:String){
         
         do {
             try string.write(toFile: path, atomically: true, encoding:String.Encoding.utf8)
