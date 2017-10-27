@@ -151,14 +151,17 @@ class XMLParserTool: NSObject {
             
             return
         }
+        //判断该属性是否存在
+        
+        let root = doc.rootElement()
+        
         for (key, value) in dic {
             
-            let arrt = GDataXMLNode.attribute(withName: key, stringValue: value)
+            let eleAttr = root?.attribute(forName: key)
             
-            doc.rootElement().addAttribute(arrt as! GDataXMLNode!)
+            eleAttr?.setStringValue(value)
             
         }
-        
         self.saveXMLFile(doc: doc, to: filePath)
     
     }

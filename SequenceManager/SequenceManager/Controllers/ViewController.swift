@@ -307,7 +307,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
                 
                 self.appointModuleSequence(modulePath: itemPath + "/subs/背景", sequencePath: "背景", parentModuleID: item.moduleID)
                 
-                self.xmlTool.changeNodeElement(XMLFilePath: itemPath + "/subs/背景/subs/内容/layout.xml", nodeName: "layout", elementDic: ["whenAppearUpdateLayout":"YES"])
+                self.xmlTool.changeNodeElement(XMLFilePath: itemPath + "/subs/背景/subs/内容/layout.xml", nodeName: "layout", elementDic: ["whenAppearUpdateLayout":"NO"])
                 //logo
                 self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/装饰/subs/logo", AndItemID: "")
                 
