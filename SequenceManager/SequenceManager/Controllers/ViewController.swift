@@ -272,6 +272,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         let modulePath = path + "/模块/subs/模块"
         
+        
         guard array.count != 0 else {
             
             return
