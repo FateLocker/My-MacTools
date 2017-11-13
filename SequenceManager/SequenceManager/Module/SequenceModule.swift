@@ -18,6 +18,8 @@ class SequenceModule: NSObject {
     
     var modulePath = String()
     
+    var floderPath = String()
+    
     var leafModules = [SequenceModule]()
 //        {
 //            didSet{
