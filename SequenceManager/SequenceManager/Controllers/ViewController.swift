@@ -73,9 +73,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         data1.leafModules = [data11]
         data11.leafModules = [data111,data112]
         
-        ROOTMODULE.leafModules = [data1,data2]
-        data1.parentModule = ROOTMODULE
-        data2.parentModule = ROOTMODULE
+        ROOTMODULE.leafModules = []
         
         return ROOTMODULE.leafModules
     }()
@@ -296,83 +294,6 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
     }
     
-    
-    /// 创建区位脚本模块
-    ///
-    /// - Parameters:
-    ///   - array: 模块数据源
-    ///   - path: 存储路径
-    ///   - parentMod: 父模块(用于获得父模块的脚本存储路径，子模块需要存储于父模块的路径下)
-    private func createTracficModule(sourceArray array:Array<SequenceModule>, savePath path:String,parentModule parentMod:SequenceModule?){
-        
-        
-        
-        //新模块存储路径：上一级模块的路径之下
-        let modulePath = path + "/模块/subs/模块"
-        
-        guard array.count != 0 else {
-            
-            return
-        }
-        
-        //遍历模型存储数据源
-        for item in array {
-            
-            var j = 0
-            
-            j = array.index(of: item)!
-            
-            if item.isLeaf{
-                
-                var savePath = path
-                
-                if parentMod == nil {
-                    
-                    savePath = ROOTMODULE.modulePath +  "/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
-                    
-                    self.createModuleAndAddID(from: TRAFFICROOT_RESOURCE_PATH, to: savePath, AndItemID: item.moduleID)
-                    
-                }else{
-                    
-                    let moduleFolderPath = savePath + "/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
-                    
-                    self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: moduleFolderPath, AndItemID: item.moduleID)
-                    
-                    //指定模块路径
-                    
-                    self.appointModuleSequence(modulePath: moduleFolderPath, sequencePath: item.moduleID, parentModuleID: parentMod?.moduleID)
-                
-                }
-                
-            }else{
-                
-                var itemPath = modulePath + "/\(String(format:"%.2d",j))" + item.moduleID
-                
-                if let parentModule = parentMod {
-                    
-                    itemPath = "\(parentModule.modulePath)" + "/subs/模块/\(String(format:"%.2d",j))" + item.moduleID
-                }
-                
-                
-                self.createModuleAndAddID(from: TRAFFICROOT_RESOURCE_PATH, to: itemPath, AndItemID: item.moduleID)
-                
-                item.modulePath = itemPath
-                
-                self.createTracficModule(sourceArray: item.leafModules, savePath: path, parentModule: item)
-                //背景
-                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/背景", AndItemID: "")
-                
-                self.appointModuleSequence(modulePath: itemPath + "/subs/背景", sequencePath: "背景", parentModuleID: item.moduleID)
-                
-                self.xmlTool.changeNodeElement(XMLFilePath: itemPath + "/subs/背景/subs/内容/layout.xml", nodeName: "layout", elementDic: ["whenAppearUpdateLayout":"NO"])
-                //logo
-                self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: itemPath + "/subs/装饰/subs/logo", AndItemID: "")
-                
-                self.appointModuleSequence(modulePath: itemPath + "/subs/装饰/subs/logo", sequencePath: "logo", parentModuleID: item.moduleID)
-            }
-        }
-    }
-    
 
 //MARK: Test
     //》》》》》》》》》》》》》  区位模块重构测试   》》》》》》》》》》》》》//
@@ -481,14 +402,13 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         //背景
         self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: savePath + "/subs/背景", AndItemID: "")
-        
-        self.appointModuleSequence(modulePath: savePath + "/subs/背景", sequencePath: "背景", parentModuleID: item.moduleID)
-        
-        self.xmlTool.changeNodeElement(XMLFilePath: savePath + "/subs/背景/subs/内容/layout.xml", nodeName: "layout", elementDic: ["whenAppearUpdateLayout":"NO"])
+    
         //logo
         self.createModuleAndAddID(from: TRAFFICSUB_RESOURCE_PATH, to: savePath + "/subs/装饰/subs/logo", AndItemID: "")
         
-        self.appointModuleSequence(modulePath: savePath + "/subs/装饰/subs/logo", sequencePath: "logo", parentModuleID: item.moduleID)
+        self.appointModuleSequence(sequenceModule: item)
+        
+        self.xmlTool.changeNodeElement(XMLFilePath: savePath + "/subs/背景/subs/内容/layout.xml", nodeName: "layout", elementDic: ["whenAppearUpdateLayout":"NO"])
     
     }
     
@@ -509,108 +429,46 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         let path = item.floderPath[index...index2]
         
+        print("\(item.modulePath) ===== \(item.floderPath)")
+        
+        if !item.isLeaf || item.parentModule?.moduleID == "RootModule"{
+            
+            //背景
+            
+            self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/背景", sequenceFloderPath: "\(path)/背景")
+            
+            
+            //logo
+            
+            
+            self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/装饰/subs/logo", sequenceFloderPath: "\(path)/logo")
+            
+            
+        }else{
+            
+            self.changeLeafModuleSequencePath(modulePath: item.modulePath, sequenceFloderPath: path)
+        
+        
+        }
+    
+    }
+    
+    private func changeLeafModuleSequencePath(modulePath path:String,sequenceFloderPath sequencePath:String){
         
         //导入
         
-        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: item.modulePath + "/subs/模块/01.导入/datafile.xml", addProperty: "\(path)/导入" )
+        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: "/\(path)/subs/模块/01.导入/datafile.xml", addProperty: "\(sequencePath)/导入" )
         
         //内容
         
-        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: item.modulePath + "/subs/模块/02.内容/datafile.xml", addProperty: "\(path)//内容" )
+        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: "/\(path)/subs/模块/02.内容/datafile.xml", addProperty: "\(sequencePath)/内容" )
+    
+    
     
     }
     
     
     //《《《《《《《《《《《《《《《《《  区位模块重构测试  《《《《《《《《《《《//
-    
-    private func appointModuleSequence(modulePath path:String,sequencePath sequence:String, parentModuleID parentID:String?){
-        
-        var sequencePath = "序列帧/区位"
-        
-        if let str = parentID {
-            
-            if sequence == "logo" || sequence == "背景"{
-                
-                sequencePath = sequencePath + "/\(str)"
-                
-            }else{
-                
-                sequencePath = sequencePath + "/\(str)" + "/模块"
-                
-            }
-        }
-        
-        //导入
-        
-        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: path + "/subs/模块/01.导入/datafile.xml", addProperty: sequencePath + "/\(sequence)/导入" )
-        
-        //内容
-        
-        self.xmlTool.changeXMLRootElementProperty(targetXMLPath: path + "/subs/模块/02.内容/datafile.xml", addProperty: sequencePath + "/\(sequence)/内容" )
-    }
-    
-    //创建区位序列文件
-    private func createTrafficSequenceFloder(source folderSource:Array<SequenceModule>,savePath path:String,parentModule parentMod:SequenceModule?){
-        
-        if folderSource.count == 0 {
-            
-            return
-        }
-        
-        for item in folderSource {
-            
-            if item.isLeaf {
-                
-                self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: (parentMod?.floderPath)! + "/\(item.moduleID)")
-                
-                
-            }else{
-            
-                if let parentModule = parentMod {
-                    
-                    item.floderPath = parentModule.floderPath + "/模块" + "/\(item.moduleID)"
-                    
-                    self.moduleFileManager.createDirectory(item.floderPath)
-                    
-                }else{
-                    
-                    let itemPath = path + "/" + item.moduleID
-                    
-                    self.moduleFileManager.copyFile(from: TRAFFICROOTFOLDER_RESOURCE_PATH, to: itemPath )
-                    
-                    item.floderPath = itemPath
-                }
-                
-                self.createTrafficSequenceFloder(source: item.leafModules, savePath: path, parentModule: item)
-            
-            }
-            /**
-            
-            if let parentModule = parentMod {
-                
-                self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: parentModule.modulePath + "/模块" + "/\(item.moduleID)")
-                
-            }else{
-                
-                let itemPath = path + "/" + item.moduleID
-                
-                self.moduleFileManager.copyFile(from: TRAFFICROOTFOLDER_RESOURCE_PATH, to: itemPath )
-                
-                item.modulePath = itemPath
-                
-                self.createTrafficSequenceFloder(source: item.leafModules, savePath: path, parentModule: item)
-                
-                if item.isLeaf {
-                    
-                    self.moduleFileManager.copyFile(from: TRAFFICSUBFOLDER_RESOURCE_PATH, to: itemPath + "/模块" + "/\(item.moduleID)")
-                }
-            
-            
-             }
-             **/
-            
-        }
-    }
     
     private func createModuleAndAddID(from pathFrom:String,to pathTo:String,AndItemID item:String){
         
