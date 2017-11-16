@@ -136,6 +136,8 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
     ///添加模块
     @IBAction func addSubModule(_ sender: NSButton) {
         
+        
+        
         i = 0
         
         if self.textField.stringValue.isEmpty {
@@ -154,6 +156,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
             
             self.moduleListOutlineView.reloadData()
             
+            
             return
         }
         
@@ -164,6 +167,8 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         module.parentModule = selectModuleItem
         
         self.moduleListOutlineView.reloadData()
+        
+//        self.moduleListOutlineView.deselectRow(selectRow)
         
         
     }
@@ -437,11 +442,14 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
             
             self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/背景", sequenceFloderPath: "\(path)/背景")
             
-            
             //logo
             
-            
             self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/装饰/subs/logo", sequenceFloderPath: "\(path)/logo")
+            
+            if item.parentModule?.moduleID == "RootModule" {
+                
+                self.changeLeafModuleSequencePath(modulePath:item.modulePath, sequenceFloderPath: path)
+            }
             
             
         }else{
@@ -603,7 +611,6 @@ extension ViewController:NSOutlineViewDelegate{
         
         
     }
-    
     //点击列的表头
     public func outlineView(_ outlineView: NSOutlineView, didClick tableColumn: NSTableColumn) {
         
