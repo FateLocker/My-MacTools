@@ -136,8 +136,6 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
     ///添加模块
     @IBAction func addSubModule(_ sender: NSButton) {
         
-        
-        
         i = 0
         
         if self.textField.stringValue.isEmpty {
@@ -151,6 +149,8 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         guard let selectModuleItem = self.moduleListOutlineView.item(atRow: self.moduleListOutlineView.selectedRow) as? SequenceModule else {
             
             module.parentModule = ROOTMODULE
+            
+            ROOTMODULE.leafModules.append(module)
             
             self.dataSource.append(module)
             
@@ -517,32 +517,22 @@ extension ViewController:NSMenuDelegate{
         
         }
         
-        if clickModule.parentModule == nil {//没有父模块
+        if (clickModule.parentModule?.leafModules.contains(clickModule))! {
             
-            if self.dataSource.contains(clickModule) {
-                
-                let index = self.dataSource.index(of: clickModule)
+            let index = clickModule.parentModule?.leafModules.index(of: clickModule)
+            
+            clickModule.parentModule?.leafModules.remove(at: index!)
+            
+            if clickModule.parentModule?.moduleID == "RootModule" {
                 
                 self.dataSource.remove(at: index!)
-                
-            }
-    
-        }else{
-            
-            if (clickModule.parentModule?.leafModules.contains(clickModule))! {
-                
-                let index = clickModule.parentModule?.leafModules.index(of: clickModule)
-                
-                clickModule.parentModule?.leafModules.remove(at: index!)
-                
-                if clickModule.parentModule?.leafModules.count == 0 {
-                    
-                    clickModule.parentModule?.isLeaf = true
-                }
-                
             }
             
-        
+            if clickModule.parentModule?.leafModules.count == 0 {
+                
+                clickModule.parentModule?.isLeaf = true
+            }
+            
         }
         
         self.moduleListOutlineView.reloadData()
