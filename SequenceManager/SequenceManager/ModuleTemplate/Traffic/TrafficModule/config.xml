@@ -1,8 +1,6 @@
 <root>
 	<type>Root</type>
     <id>区位交通</id>
-	<name></name>
-	<subname></subname>
 	<icon>logo.png</icon>
 	<highlightedIcon>logo_h.png</highlightedIcon>
 	<layout>layout.xml</layout>

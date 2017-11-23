@@ -97,8 +97,8 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         //关闭窗口,不退出程序
         
+        
     }
-    
     func closeWindow(){
     
         NSApp.terminate(self)
@@ -420,35 +420,34 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
     
     private func appointModuleSequence(sequenceModule item:SequenceModule){
         
-        var str1 = NSString()
-        
-        str1 = item.floderPath as NSString
-        
-        let range = str1.range(of: ROOTMODULE.floderPath)
-        
-        print(range.location,range.length)
-        
-        let index = item.floderPath.index(item.floderPath.startIndex, offsetBy: range.length + 1)
-        
-        let index2 = item.floderPath.index(item.floderPath.endIndex, offsetBy: -1)
-        
-        let path = item.floderPath[index...index2]
-        
-        print("\(item.modulePath) ===== \(item.floderPath)")
+        let path = self.stringTailor(tailar: item.floderPath, withString: ROOTMODULE.floderPath)
         
         if !item.isLeaf || item.parentModule?.moduleID == "RootModule"{
             
-            //背景
-            
-            self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/背景", sequenceFloderPath: "\(path)/背景")
-            
-            //logo
-            
-            self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/装饰/subs/logo", sequenceFloderPath: "\(path)/logo")
-            
             if item.parentModule?.moduleID == "RootModule" {
                 
+                let path1 = self.stringTailor(tailar: path, withString: "/模块/\(item.moduleID)")
+                
+                //背景
+                
+                self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/背景", sequenceFloderPath: "\(path1)/背景")
+                
+                //logo
+                
+                self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/装饰/subs/logo", sequenceFloderPath: "\(path1)/logo")
+                
                 self.changeLeafModuleSequencePath(modulePath:item.modulePath, sequenceFloderPath: path)
+                
+            }else{
+                
+                
+                //背景
+                
+                self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/背景", sequenceFloderPath: "\(path)/背景")
+                
+                //logo
+                
+                self.changeLeafModuleSequencePath(modulePath: item.modulePath + "/subs/装饰/subs/logo", sequenceFloderPath: "\(path)/logo")
             }
             
             
@@ -458,6 +457,27 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         
         
         }
+    
+    }
+    
+    //字符串裁剪
+    private func stringTailor(tailar originalString:String ,withString segmentString:String) -> String{
+        
+        if !originalString.contains(segmentString) {
+            
+            print("不包含需要裁剪字符串")
+        }
+        var originalStr = originalString
+        
+        let range = (originalString as NSString).range(of: segmentString)
+        
+        let startIndex = originalString.index(originalString.startIndex, offsetBy: range.location)
+        
+        let endIndex = originalString.index(originalString.startIndex, offsetBy: (range.location + range.length - 1))
+        
+        originalStr.removeSubrange(startIndex...endIndex)
+        
+        return originalStr
     
     }
     

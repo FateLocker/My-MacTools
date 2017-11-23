@@ -1,8 +1,6 @@
 <root>
     <type>SequenceFramesScene</type>
     <id>Content</id>
-    <name></name>
-    <subname></subname>
     <icon>logo</icon>
     <highlightedIcon>logo_h</highlightedIcon>
     <layout>layout.xml</layout>
