@@ -130,7 +130,10 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
     }
     @IBAction func clearDataSource(_ sender: NSButton) {
         
-        self.dataSource.removeAll()
+        ROOTMODULE.leafModules = []
+        
+        self.dataSource = ROOTMODULE.leafModules
+        
         self.moduleListOutlineView.reloadData()
     }
     ///添加模块
@@ -463,10 +466,13 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
     //字符串裁剪
     private func stringTailor(tailar originalString:String ,withString segmentString:String) -> String{
         
-        if !originalString.contains(segmentString) {
+        guard originalString.contains(segmentString) else {
             
             print("不包含需要裁剪字符串")
+            
+            return originalString
         }
+        
         var originalStr = originalString
         
         let range = (originalString as NSString).range(of: segmentString)
