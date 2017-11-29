@@ -423,7 +423,7 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
     
     private func appointModuleSequence(sequenceModule item:SequenceModule){
         
-        let path = self.stringTailor(tailar: item.floderPath, withString: ROOTMODULE.floderPath)
+        let path = self.stringTailor(tailar: item.floderPath, withString: "\(ROOTMODULE.floderPath)/")
         
         if !item.isLeaf || item.parentModule?.moduleID == "RootModule"{
             
