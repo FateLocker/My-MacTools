@@ -510,7 +510,6 @@ class ViewController: NSViewController,NSWindowDelegate,NSApplicationDelegate{
         self.moduleFileManager.copyFile(from: pathFrom, to: pathTo)
         
         //命名模块ID
-//        self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item)
         self.xmlTool.addXMLFileElement(targetXMLPath: pathTo + "/config.xml", addProperty: item, withElementName: "id")
         
     }
